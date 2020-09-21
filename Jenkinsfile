@@ -1,9 +1,16 @@
 node {
     def mvnHome
-    stage('Preparation') { // for display purposes
+    stage('Checkout code') { // for display purposes
         // Get some code from a GitHub repository
-        git 'https://github.com/vardansavarde/SimpleJavaWebApp.git'
+		//CHANGE THE REPOSITORY PATH
+        //git 'https://github.com/vardansavarde/SimpleJavaWebApp.git'
+		//USE FOLLOWING IF YOUR REPOSITORY REQUIRES AUTHENTICATION
+		//YOU WILL HAVE TO CONFIGURE USERNAME/PASSWORD CREDENTIALS
+		//IN 'MANAGE CREDENTIALS' SECTION OF JENKINS
+		git credentialsId: 'vardangit', poll: false, url: 'https://github.com/vardansavarde/SimpleJavaWebApp.git'
         // Get the Maven tool.
+		//THE MAVEN TOOL MUST BE CONFIGURED IN SYSTEM TOOLS CONFIGURATION
+		//OF JENKINS
         mvnHome = tool 'Maven 3.3.3'
     }
     stage('Build') {
@@ -16,8 +23,9 @@ node {
             }
         }
     }
-    stage('Results') {
+    stage('Archive Results') {
         junit allowEmptyResults: true,testResults: '**/target/surefire-reports/TEST-*.xml'
+		//CHANGE THE ARCHIVE EXTENSION IF REQUIRED
         archiveArtifacts 'target/*.war'
     }
 }
