@@ -28,4 +28,7 @@ node {
 		//CHANGE THE ARCHIVE EXTENSION IF REQUIRED
         archiveArtifacts 'target/*.war'
     }
+	stage('Deploy to tomcat'){
+		sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '\'qa-approved/\'yyyyMMddHHmmss', remoteDirectorySDF: true, removePrefix: '', sourceFiles: 'target/**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+	}
 }
