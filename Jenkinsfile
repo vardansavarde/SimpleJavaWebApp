@@ -32,7 +32,7 @@ node {
 	stage('Deploy to tomcat'){
 		withEnv(["PROJ_DIR=$projectDir"]){
 		echo "${env.PROJ_DIR}"
-		sshPublisher failOnError: true, publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo $PROJ_DIR''', execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: env.PROJ_DIR, remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)]
+		sshPublisher failOnError: true, publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''echo env.PROJ_DIR''', execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: env.PROJ_DIR, remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)]
 		}
 	}
 }
