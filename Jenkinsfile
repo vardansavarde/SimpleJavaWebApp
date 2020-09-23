@@ -32,7 +32,7 @@ node {
 	stage('Deploy to tomcat'){
 		withEnv(["PROJ_DIR=$projectDir"]){
 		echo "${env.PROJ_DIR}"
-		sshPublisher failOnError: true, publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "EXTRA_ARGS=\"{'war_file_name':\'\$(ls $PROJ_DIR | head -n 1)\'}\";cd $PROJ_DIR;ansible-playbook -i inventory.txt site.yml -e \$EXTRA_ARGS;echo $BUILD_NUMBER;hostname", execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: env.PROJ_DIR, remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/**/*.war,site.yml,inventory.txt')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)]
+		sshPublisher failOnError: true, publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "EXTRA_ARGS=\"{'war_file_name':\'\$(ls $PROJ_DIR | head -n 1)\'}\";cd $PROJ_DIR;ansible-playbook -i inventory.txt site.yml -e \$EXTRA_ARGS", execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: env.PROJ_DIR, remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/**/*.war,site.yml,inventory.txt')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)]
 		}
 	}
 }
