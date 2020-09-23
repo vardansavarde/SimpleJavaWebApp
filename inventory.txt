@@ -1,0 +1,2 @@
+[appservers]
+10.9.8.21 ansible_user=adminuser

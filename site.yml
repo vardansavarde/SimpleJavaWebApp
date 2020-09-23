@@ -1,0 +1,6 @@
+- name: Install/update web site
+  hosts: appservers
+
+  roles:
+    - install_tomcat
+    - deploy-to-tomcat
