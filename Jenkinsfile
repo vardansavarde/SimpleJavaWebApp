@@ -1,4 +1,5 @@
 node {
+	def projectDir = 'test-ansible-project'+(new Date()).format('/yyyyMMddHHmm')
     def mvnHome
     stage('Checkout code') { // for display purposes
         // Get some code from a GitHub repository
@@ -29,6 +30,6 @@ node {
         archiveArtifacts 'target/*.war'
     }
 	stage('Deploy to tomcat'){
-		sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '\'qa-approved/\'yyyyMMddHHmmss', remoteDirectorySDF: true, removePrefix: '', sourceFiles: 'target/**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+		sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ansible-playbook -i inventory.txt site.yml -K -e \'{"war_file_path":"${projectDir}","war_file_name":"$(ls ${projectDir} | head -n 1)"}\'', execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '${projectDir}', remoteDirectorySDF: true, removePrefix: '', sourceFiles: 'target/**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 	}
 }
