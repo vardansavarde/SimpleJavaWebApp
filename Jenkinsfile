@@ -1,5 +1,7 @@
 node {
-	def projectDir = 'test-ansible-project'+(new Date()).format('/yyyyMMddHHmm')
+	def allJob = env.JOB_NAME.tokenize('/') as String[];
+	def projectName = allJob[0];
+	def projectDir = $projectName+(new Date()).format('/yyyyMMddHHmm')
     def mvnHome
     stage('Checkout code') { // for display purposes
         // Get some code from a GitHub repository
