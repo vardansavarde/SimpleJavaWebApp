@@ -30,6 +30,8 @@ node {
         archiveArtifacts 'target/*.war'
     }
 	stage('Deploy to tomcat'){
-		sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ansible-playbook -i inventory.txt site.yml -K -e \'{"war_file_path":"${projectDir}","war_file_name":"$(ls ${projectDir} | head -n 1)"}\'', execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '${projectDir}', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+		withEnv(["PROJ_DIR=$projectDir"]){
+		sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ansible-playbook -i inventory.txt site.yml -K -e \'{"war_file_path":"$PROJ_DIR","war_file_name":"$(ls $PROJ_DIR | head -n 1)"}\'', execTimeout: 120000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '$PROJ_DIR', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+		}
 	}
 }
